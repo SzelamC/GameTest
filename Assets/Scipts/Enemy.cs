@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private Animator enemyAnim;
+    public GameObject bloodEffect;
+    public Animator enemyAnim;
     private SpriteRenderer enemyRen;
+    private PlayerHealth playerHealth;
+    
     public int health;
     public int damage;
     public float flashTime;
@@ -16,7 +19,9 @@ public class Enemy : MonoBehaviour
     {
         enemyAnim = GetComponent<Animator>();
         enemyRen = GetComponent<SpriteRenderer>();
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         originalColor = enemyRen.color;
+
     }
 
     // Update is called once per frame
@@ -28,9 +33,12 @@ public class Enemy : MonoBehaviour
     }
 
     public void TakeDamage(int damage){
+        Instantiate(bloodEffect, transform.position, Quaternion.identity);
         health -= damage;
         FlashColor(flashTime);
+        CinemachineShake.Instance.ShakeCamera(3f, .1f);
     }
+
 
     void FlashColor(float time){
         enemyRen.color = Color.red;
@@ -39,5 +47,14 @@ public class Enemy : MonoBehaviour
 
     void ResetColor(){
         enemyRen.color = originalColor;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) 
+    {
+        if(other.gameObject.CompareTag("Player") && other.GetType().ToString() == "UnityEngine.PolygonCollider2D"){
+            if(playerHealth != null){
+                playerHealth.DamagePlayer(damage);
+            }    
+        }
     }
 }

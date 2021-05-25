@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         } else{
             isFall = false;
         }
-        SwitchPlayerAnimation();
+        SwitchAnimation();
     }
 
     void FixedUpdate() 
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void SwitchPlayerAnimation()
+    void SwitchAnimation()
     {
         if(!isGrounded||playerAnim.GetBool("PlayerJump")){
             if(isFall){
