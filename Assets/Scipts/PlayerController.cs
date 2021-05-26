@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D playerRigidbody;
-    private Collider2D playerFeet;
+    private BoxCollider2D playerFeet;
     private Animator playerAnim;
 
     public float runSpeed;
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     }
     void GroundCheck()
     {
-        isGrounded = playerFeet.IsTouchingLayers(LayerMask.GetMask("Floor"));
+        isGrounded = playerFeet.IsTouchingLayers(LayerMask.GetMask("Floor")) || playerFeet.IsTouchingLayers(LayerMask.GetMask("MovingPlatform"));
         if(isGrounded){
             extraJumpCount = maxExtraJumps;
         }
